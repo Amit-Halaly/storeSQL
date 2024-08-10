@@ -2,10 +2,12 @@ package ben_aharoni_amit_halaly;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.Scanner;
 
 public class products implements Comparable<products>, Cloneable {
 	protected String product_name;
@@ -14,7 +16,6 @@ public class products implements Comparable<products>, Cloneable {
 	protected int selling_price;
 	protected int stock;
 	protected double weight;
-
 
 	public products(String product_name, int cost_price, int selling_price, int stock, String pid, double weight) {
 		this.setProduct_name(product_name);
@@ -78,6 +79,7 @@ public class products implements Comparable<products>, Cloneable {
 			System.out.println("Not enough stock available for this product.");
 			return;
 		}
+		Scanner input = new Scanner(System.in);
 		Connection conn = null;
 		try {
 			Class.forName("org.postgresql.Driver");
@@ -121,8 +123,35 @@ public class products implements Comparable<products>, Cloneable {
 			String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 			Statement stmt = conn.createStatement();
-			String sql = "INSERT INTO ordercustomertable (oid, cid) VALUES (" + oid + " , " + customer.getCid()
-					+ ");";
+			String sql = "INSERT INTO ordercustomertable (oid, cid) VALUES (" + oid + " , " + customer.getCid() + ");";
+			stmt.executeQuery(sql);
+			stmt.closeOnCompletion();
+		} catch (Exception ex) {
+			System.out.println("SQLException: " + ex.getMessage());
+		}
+		try {
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://localhost:5432/college";
+			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
+			Statement stmt = conn.createStatement();
+			String sql = "SELECT * FROM shippingcompanytable;";
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				System.out.println(rs.getInt("scid") + "- " + rs.getString("scname") + "- " + rs.getString("contact")
+						+ "- " + rs.getDouble("shippingfee") + rs.getString("contactmobile"));
+			}
+			stmt.closeOnCompletion();
+		} catch (Exception ex) {
+			System.out.println("SQLException: " + ex.getMessage());
+		}
+		System.out.println("Pleace enter the SCID of the chipping company that you want to make your order: ");
+		int choose = input.nextInt();
+		try {
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
+			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
+			Statement stmt = conn.createStatement();
+			String sql = "INSERT INTO shippingordertable (scid, oid) VALUES (" + choose + " , " + oid + ");";
 			stmt.executeQuery(sql);
 			stmt.closeOnCompletion();
 		} catch (Exception ex) {
@@ -134,6 +163,7 @@ public class products implements Comparable<products>, Cloneable {
 		if (quantity > this.stock) {
 			System.out.println("Not enough stock available for this product.");
 		}
+		Scanner input = new Scanner(System.in);
 		Connection conn = null;
 		try {
 			Class.forName("org.postgresql.Driver");
@@ -177,8 +207,35 @@ public class products implements Comparable<products>, Cloneable {
 			String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 			Statement stmt = conn.createStatement();
-			String sql = "INSERT INTO ordercustomertable (oid, cid) VALUES (" + oid + " , " + customer.getCid()
-					+ ");";
+			String sql = "INSERT INTO ordercustomertable (oid, cid) VALUES (" + oid + " , " + customer.getCid() + ");";
+			stmt.executeQuery(sql);
+			stmt.closeOnCompletion();
+		} catch (Exception ex) {
+			System.out.println("SQLException: " + ex.getMessage());
+		}
+		try {
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://localhost:5432/college";
+			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
+			Statement stmt = conn.createStatement();
+			String sql = "SELECT * FROM shippingcompanytable;";
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				System.out.println(rs.getInt("scid") + "- " + rs.getString("scname") + "- " + rs.getString("contact")
+						+ "- " + rs.getDouble("shippingfee") + rs.getString("contactmobile"));
+			}
+			stmt.closeOnCompletion();
+		} catch (Exception ex) {
+			System.out.println("SQLException: " + ex.getMessage());
+		}
+		System.out.println("Pleace enter the SCID of the chipping company that you want to make your order: ");
+		int choose = input.nextInt();
+		try {
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
+			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
+			Statement stmt = conn.createStatement();
+			String sql = "INSERT INTO shippingordertable (scid, oid) VALUES (" + choose + " , " + oid + ");";
 			stmt.executeQuery(sql);
 			stmt.closeOnCompletion();
 		} catch (Exception ex) {
