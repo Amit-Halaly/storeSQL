@@ -230,14 +230,6 @@ public class storeFacade {
 		return null;
 	}
 
-	public StoreMemento saveMem() throws CloneNotSupportedException {
-		TreeSet<products> clonedProducts = new TreeSet<>();
-		for (products product : this.product_list) {
-			clonedProducts.add(product.pclone());
-		}
-		return new StoreMemento(clonedProducts);
-	}
-
 	public void resetMem(StoreMemento memento) {
 		this.product_list = new TreeSet<>(memento.getState());
 	}

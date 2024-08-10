@@ -4,15 +4,13 @@ public class orders {
 	private customer customer;
 	private products product;
 	private int quantity;
-	private String serial;
 	private int oid;
 	private eShipmentType type;
 
-	public orders(customer customer, products product, int oid, int quantity, String serial, eShipmentType type) {
+	public orders(customer customer, products product, int oid, int quantity, eShipmentType type) {
 		this.customer = customer;
 		this.product = product;
 		this.quantity = quantity;
-		this.serial = serial;
 		this.type = type;
 		this.oid = oid;
 	}
@@ -21,18 +19,16 @@ public class orders {
 		this.customer = customer;
 		this.product = product;
 		this.quantity = quantity;
-		this.serial = serial;
 		this.oid = oid;
 	}
 
 	@Override
 	public String toString() {
-		return "customer: " + customer + "\nquantity: " + quantity + "\nserial: " + serial + "\nshipment type: " + type
-				+ "\n";
+		return "customer: " + customer + "\nquantity: " + quantity + "\nshipment type: " + type + "\n";
 	}
 
 	public String toStringNoShipment() {
-		return "customer: " + customer + "\nquantity: " + quantity + "\nserial: " + serial + "\n";
+		return "customer: " + customer + "\nquantity: " + quantity + "\n";
 	}
 
 	public eShipmentType getType() {
@@ -49,14 +45,6 @@ public class orders {
 
 	public int getQuantity() {
 		return quantity;
-	}
-
-	public String getSerial() {
-		return serial;
-	}
-
-	public void setSerial(String serial) {
-		this.serial = serial;
 	}
 
 	public orders oclone() {

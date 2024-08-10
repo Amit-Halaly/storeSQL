@@ -11,7 +11,7 @@ public class Caretaker {
 		while (savedStates.size() > currentState + 1) {
 			savedStates.remove(savedStates.size() - 1);
 		}
-		savedStates.add(storeFacade.saveMem());
+		//savedStates.add(storeFacade.saveMem());
 		currentState = savedStates.size() - 1;
 	}
 

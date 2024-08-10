@@ -115,49 +115,49 @@ public class main {
 		products p9 = stfactory.createSoldToWholesellers("underwear", 40, 80, 20, "zzz", 98.99);
 
 		s.addProduct(p1);
-		p1.addOrder(c1, 11, 1, "aa", eShipmentType.EXPRESS);
-		p1.addOrder(c2, 12, 1, "ab", eShipmentType.STANDARD);
-		p1.addOrder(c3, 13, 1, "ac", eShipmentType.EXPRESS);
+		p1.addOrder(c1, 11, 1, eShipmentType.EXPRESS);
+		p1.addOrder(c2, 12, 1, eShipmentType.STANDARD);
+		p1.addOrder(c3, 13, 1, eShipmentType.EXPRESS);
 
 		s.addProduct(p2);
-		p2.addOrder(c1, 21, 1, "ba", eShipmentType.EXPRESS);
-		p2.addOrder(c2, 22, 1, "bb", eShipmentType.STANDARD);
-		p2.addOrder(c3, 23, 1, "bc", eShipmentType.EXPRESS);
+		p2.addOrder(c1, 21, 1, eShipmentType.EXPRESS);
+		p2.addOrder(c2, 22, 1, eShipmentType.STANDARD);
+		p2.addOrder(c3, 23, 1, eShipmentType.EXPRESS);
 
 		s.addProduct(p3);
-		p3.addOrder(c1, 31, 1, "ca", eShipmentType.EXPRESS);
-		p3.addOrder(c2, 32, 1, "cb", eShipmentType.STANDARD);
-		p3.addOrder(c3, 33, 1, "cc", eShipmentType.EXPRESS);
+		p3.addOrder(c1, 31, 1, eShipmentType.EXPRESS);
+		p3.addOrder(c2, 32, 1, eShipmentType.STANDARD);
+		p3.addOrder(c3, 33, 1, eShipmentType.EXPRESS);
 
 		s.addProduct(p4);
-		p4.addOrder(c1, 41, 1, "da", eShipmentType.EXPRESS);
-		p4.addOrder(c2, 42, 1, "db", eShipmentType.STANDARD);
-		p4.addOrder(c3, 43, 1, "dc", eShipmentType.EXPRESS);
+		p4.addOrder(c1, 41, 1, eShipmentType.EXPRESS);
+		p4.addOrder(c2, 42, 1, eShipmentType.STANDARD);
+		p4.addOrder(c3, 43, 1, eShipmentType.EXPRESS);
 
 		s.addProduct(p5);
-		p5.addOrder(c1, 51, 1, "ea", eShipmentType.EXPRESS);
-		p5.addOrder(c2, 52, 1, "eb", eShipmentType.STANDARD);
-		p5.addOrder(c3, 53, 1, "ec", eShipmentType.EXPRESS);
+		p5.addOrder(c1, 51, 1, eShipmentType.EXPRESS);
+		p5.addOrder(c2, 52, 1, eShipmentType.STANDARD);
+		p5.addOrder(c3, 53, 1, eShipmentType.EXPRESS);
 
 		s.addProduct(p6);
-		p6.addOrder(c1, 61, 1, "fa", eShipmentType.EXPRESS);
-		p6.addOrder(c2, 62, 1, "fb", eShipmentType.STANDARD);
-		p6.addOrder(c3, 63, 1, "fc", eShipmentType.EXPRESS);
+		p6.addOrder(c1, 61, 1, eShipmentType.EXPRESS);
+		p6.addOrder(c2, 62, 1, eShipmentType.STANDARD);
+		p6.addOrder(c3, 63, 1, eShipmentType.EXPRESS);
 
 		s.addProduct(p7);
-		p7.addOrder(c1, 71, 1, "ga", eShipmentType.EXPRESS);
-		p7.addOrder(c2, 72, 1, "gb", eShipmentType.STANDARD);
-		p7.addOrder(c3, 73, 1, "gc", eShipmentType.EXPRESS);
+		p7.addOrder(c1, 71, 1, eShipmentType.EXPRESS);
+		p7.addOrder(c2, 72, 1, eShipmentType.STANDARD);
+		p7.addOrder(c3, 73, 1, eShipmentType.EXPRESS);
 
 		s.addProduct(p8);
-		p8.addOrder(c1, 81, 1, "ha", eShipmentType.EXPRESS);
-		p8.addOrder(c2, 82, 1, "hb", eShipmentType.STANDARD);
-		p8.addOrder(c3, 83, 1, "hc", eShipmentType.EXPRESS);
+		p8.addOrder(c1, 81, 1, eShipmentType.EXPRESS);
+		p8.addOrder(c2, 82, 1, eShipmentType.STANDARD);
+		p8.addOrder(c3, 83, 1, eShipmentType.EXPRESS);
 
 		s.addProduct(p9);
-		p9.addOrder(c1, 91, 1, "ia", eShipmentType.EXPRESS);
-		p9.addOrder(c2, 92, 1, "ib", eShipmentType.STANDARD);
-		p9.addOrder(c3, 93, 1, "ic", eShipmentType.EXPRESS);
+		p9.addOrder(c1, 91, 1, eShipmentType.EXPRESS);
+		p9.addOrder(c2, 92, 1, eShipmentType.STANDARD);
+		p9.addOrder(c3, 93, 1, eShipmentType.EXPRESS);
 		ShippingCompany sc1 = new DHLcomp("DHL", "ben", 0, "052-4444444", 1111);
 		s.addShippingCompany(sc1);
 		ShippingCompany sc2 = new FDEXcomp("FDEX", "amit", 0, "054-2222222", 2222);
@@ -222,19 +222,13 @@ public class main {
 
 	public static void removeproduct(storeFacade s) {
 		Scanner input = new Scanner(System.in);
-		if (s.getProduct_list().isEmpty()) {
-			System.out.println("there aren't any products to remove");
-			return;
-		}
-		print(s);
-		System.out.println("\nEnter the serial code of the product you want to remove :\n");
 		products foundObject = null;
-		String serial = input.next();
-		for (products element : s.getProduct_list()) {
-			if (element.getPid().equals(serial)) {
-				foundObject = element;
-				break;
-			}
+		while (foundObject == null) {
+			System.out.println("\nEnter the serial code of the product you want to change :\n");
+			String serial = input.next();
+			foundObject = s.findProducts(serial);
+			if (foundObject == null)
+				System.out.println("Wrong Serial number");
 		}
 		s.deleteProduct(foundObject);
 	}
@@ -255,114 +249,52 @@ public class main {
 
 	public static void addOrderToproduct(storeFacade s) {
 		Scanner input = new Scanner(System.in);
-		int choose = 0;
-		System.out.println("choose the product type\n");
-		System.out.println("press:\n 1)for sold in Store  \n " + "2) for sold through website \n"
-				+ " 3)for sold to wholesellers\n ");
-		choose = input.nextInt();
-		if (choose < 1 || choose > 3) {
-			System.out.println("invalid option");
-			return;
-		} else if (choose == 2) {
-			Iterator<products> it = s.getProductIterator();
-			while (it.hasNext()) {
-				products element = it.next();
-				if (element instanceof soldThroughWebsite) {
-					System.out.println(element);
-					System.out.println("-----------------------");
-				}
+		products foundObject = null;
+		int amount, i = 0, cid, oid;
+		String serial, name, mobile;
+		while (foundObject == null) {
+			System.out.println("\nEnter the serial number of the product you want to make an order:\n");
+			serial = input.next();
+			foundObject = s.findProducts(serial);
+			if (foundObject == null)
+				System.out.println("Wrong Serial number");
+		}
+		System.out.println("please enter the customer's name:");
+		name = input.next();
+		System.out.println("please enter the customer's id");
+		cid = input.nextInt();
+		System.out.println("please enter the mobile:");
+		mobile = input.next();
+		System.out.println("please enter the order id number:");
+		oid = input.nextInt();
+		System.out.println("please enter the amount:");
+		amount = input.nextInt();
+		while (i <= 0 || i >= 4) {
+			System.out.println("press: ");
+			for (eShipmentType type : eShipmentType.values()) {
+				System.out.println("(" + (i++) + ") for " + type);
+				if (i == 3)
+					System.out.println("(" + (i++) + ") for without shipment");
+				i = input.nextInt();
 			}
-			System.out.println("\nEnter the serial code of the product you want to order:\n");
-			products foundObject = null;
-			int amount, i = 1, cid, oid;
-			String oserial, name, mobile;
-			String serial = input.next();
-			for (products element : s.getProduct_list()) {
-				if (element.getPid().equals(serial)) {
-					foundObject = element;
-					System.out.println("please enter the customer's name:");
-					name = input.next();
-					System.out.println("please enter the customer's id");
-					cid = input.nextInt();
-					System.out.println("please enter the mobile:");
-					mobile = input.next();
-					System.out.println("please enter the order id number:");
-					oid = input.nextInt();
-					System.out.println("please enter the order serial number:");
-					oserial = input.next();
-					System.out.println("please enter the amount:");
-					amount = input.nextInt();
-					System.out.println("press: ");
-					for (eShipmentType type : eShipmentType.values()) {
-						System.out.println("(" + (i++) + ") for " + type);
-					}
-					i = input.nextInt();
-					switch (i) {
+			switch (i) {
+			case 1:
+				foundObject.addOrder(new customer(name, mobile, cid), oid, amount, eShipmentType.EXPRESS);
+				System.out.println("order has been created");
+				break;
 
-					case 1:
-						foundObject.addOrder(new customer(name, mobile, cid), oid, amount, oserial,
-								eShipmentType.EXPRESS);
-						System.out.println("order has been created");
-						break;
+			case 2:
+				foundObject.addOrder(new customer(name, mobile, cid), oid, amount, eShipmentType.STANDARD);
+				System.out.println("order has been created");
+				break;
 
-					case 2:
-						foundObject.addOrder(new customer(name, mobile, cid), oid, amount, oserial,
-								eShipmentType.STANDARD);
-						System.out.println("order has been created");
-						break;
-
-					default:
-						System.out.println("invalid try again");
-					}
-					break;
-				} else {
-					System.out.println("no such product with that serial in that type");
-					return;
-				}
-			}
-		} else if (choose == 1) {
-			Iterator<products> it = s.getProductIterator();
-			while (it.hasNext()) {
-				products element = it.next();
-				if (element instanceof soldinStore) {
-					System.out.println(element);
-					System.out.println("-----------------------");
-				}
-			}
-		} else if (choose == 3) {
-			Iterator<products> it = s.getProductIterator();
-			while (it.hasNext()) {
-				products element = it.next();
-				if (element instanceof SoldToWholesellers) {
-					System.out.println(element);
-					System.out.println("-----------------------");
-				}
+			default:
+				System.out.println("invalid try again");
+				break;
 			}
 		}
-		if (choose == 1 || choose == 3) {
-			System.out.println("\nEnter the serial code of the product you want to order:\n");
-			products foundObject = null;
-			int amount, cid, oid;
-			String oserial, name, mobile;
-			String serial = input.next();
-			for (products element : s.getProduct_list()) {
-				if (element.getPid().equals(serial)) {
-					foundObject = element;
-					System.out.println("please enter the customer's name:");
-					name = input.next();
-					System.out.println("please enter the customer's id");
-					cid = input.nextInt();
-					System.out.println("please enter the mobile:");
-					mobile = input.next();
-					System.out.println("please enter the order id number:");
-					oid = input.nextInt();
-					System.out.println("please enter the order serial code:");
-					oserial = input.next();
-					System.out.println("please enter the amount:");
-					amount = input.nextInt();
-					foundObject.addOrderWithoutShipment(new customer(name, mobile, cid), oid, amount, oserial);
-				}
-			}
+		if (i == 3) {
+			foundObject.addOrderWithoutShipment(new customer(name, mobile, cid), oid, amount);
 		}
 		input.nextLine();
 	}
@@ -381,11 +313,10 @@ public class main {
 			System.out.println("No product found with the serial : " + serial);
 			return;
 		}
-		if (product.undoOrder()) {
-			return;
-		} else {
-			System.out.println("There are no orders to undo for this product.");
-		}
+		/*
+		 * if (product.undoOrder()) { return; } else {
+		 * System.out.println("There are no orders to undo for this product."); }
+		 */
 	}
 
 	public static void printAllDetailsForSingleProduct(storeFacade s) {
@@ -422,28 +353,24 @@ public class main {
 		System.out.println(foundObject);
 		int i = 1, profit = 0, profit1 = 0;
 		System.out.println("\nthe orders for " + foundObject.getProduct_name() + ":\n");
-		for (orders order : foundObject.getOrderList()) {
-			if (foundObject instanceof soldThroughWebsite) {
-				profit1 = foundObject.selling_price * order.getQuantity()
-						- foundObject.cost_price * order.getQuantity();
-				System.out.println("\n" + (i++) + ")" + order + "the profit for this order :" + profit1 + "$\n");
-				System.out.println(s.findCheapestShippingOption(order));
-				profit += foundObject.selling_price * order.getQuantity()
-						- foundObject.cost_price * order.getQuantity();
-			} else {
-				profit1 = foundObject.selling_price * order.getQuantity()
-						- foundObject.cost_price * order.getQuantity();
-				System.out.println("\n" + (i++) + ")" + order + "the profit for this order: " + profit1 * 4 + "₪\n");
-				profit += foundObject.selling_price * order.getQuantity()
-						- foundObject.cost_price * order.getQuantity();
-				if (foundObject instanceof soldinStore) {
-					((soldinStore) foundObject).invoiceFormatToAcountant(foundObject, order.getQuantity());
-					((soldinStore) foundObject).invoiceFormatToCustomer(foundObject, order.getCustomer(),
-							order.getQuantity());
-				} else
-					((SoldToWholesellers) foundObject).invoiceFormatToAcountant(foundObject, order.getQuantity());
-			}
-		}
+		/*
+		 * for (orders order : foundObject.getOrderList()) { if (foundObject instanceof
+		 * soldThroughWebsite) { profit1 = foundObject.selling_price *
+		 * order.getQuantity() - foundObject.cost_price * order.getQuantity();
+		 * System.out.println("\n" + (i++) + ")" + order + "the profit for this order :"
+		 * + profit1 + "$\n"); System.out.println(s.findCheapestShippingOption(order));
+		 * profit += foundObject.selling_price * order.getQuantity() -
+		 * foundObject.cost_price * order.getQuantity(); } else { profit1 =
+		 * foundObject.selling_price * order.getQuantity() - foundObject.cost_price *
+		 * order.getQuantity(); System.out.println("\n" + (i++) + ")" + order +
+		 * "the profit for this order: " + profit1 * 4 + "₪\n"); profit +=
+		 * foundObject.selling_price * order.getQuantity() - foundObject.cost_price *
+		 * order.getQuantity(); if (foundObject instanceof soldinStore) { ((soldinStore)
+		 * foundObject).invoiceFormatToAcountant(foundObject, order.getQuantity());
+		 * ((soldinStore) foundObject).invoiceFormatToCustomer(foundObject,
+		 * order.getCustomer(), order.getQuantity()); } else ((SoldToWholesellers)
+		 * foundObject).invoiceFormatToAcountant(foundObject, order.getQuantity()); } }
+		 */
 		if (foundObject instanceof soldThroughWebsite) {
 			System.out.println("the total profit from this product is: " + profit + "$");
 			System.out.println("\n--------------------\n");
@@ -498,7 +425,7 @@ public class main {
 	}
 
 	public static void backupProgram(storeFacade s) throws CloneNotSupportedException {
-		backup = s.saveMem();
+		// backup = s.saveMem();
 		System.out.println("the current state has been backed up");
 	}
 
