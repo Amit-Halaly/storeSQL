@@ -14,7 +14,7 @@ public class products implements Comparable<products>, Cloneable {
 	protected int selling_price;
 	protected int stock;
 	protected double weight;
-	protected ArrayList<orders> order_list = new ArrayList<>();
+
 
 	public products(String product_name, int cost_price, int selling_price, int stock, String pid, double weight) {
 		this.setProduct_name(product_name);
@@ -73,15 +73,7 @@ public class products implements Comparable<products>, Cloneable {
 		this.weight = weight;
 	}
 
-	public ArrayList<orders> getOrderList() {
-		return order_list;
-	}
-
-	public Iterator<orders> getOrderIterator() {
-		return order_list.iterator();
-	}
-
-	void addOrder(customer customer, int oid, int quantity, String serial, eShipmentType type) {
+	void addOrder(customer customer, int oid, int quantity, eShipmentType type) {
 		if (quantity > this.stock) {
 			System.out.println("Not enough stock available for this product.");
 			return;
@@ -105,7 +97,8 @@ public class products implements Comparable<products>, Cloneable {
 			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 			int newStock = this.stock - quantity;
 			Statement stmt = conn.createStatement();
-			String sql = "UPDATE productstable\r\n" + "SET stock= " + newStock + "\r\n" + "WHERE pid='" + this.pid + "';";
+			String sql = "UPDATE productstable\r\n" + "SET stock= " + newStock + "\r\n" + "WHERE pid='" + this.pid
+					+ "';";
 			stmt.executeQuery(sql);
 			stmt.closeOnCompletion();
 		} catch (Exception ex) {
@@ -123,9 +116,21 @@ public class products implements Comparable<products>, Cloneable {
 		} catch (Exception ex) {
 			System.out.println("SQLException: " + ex.getMessage());
 		}
+		try {
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
+			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
+			Statement stmt = conn.createStatement();
+			String sql = "INSERT INTO ordercustomertable (oid, cid) VALUES (" + oid + " , " + customer.getCid()
+					+ ");";
+			stmt.executeQuery(sql);
+			stmt.closeOnCompletion();
+		} catch (Exception ex) {
+			System.out.println("SQLException: " + ex.getMessage());
+		}
 	}
 
-	void addOrderWithoutShipment(customer customer, int oid, int quantity, String serial) {
+	void addOrderWithoutShipment(customer customer, int oid, int quantity) {
 		if (quantity > this.stock) {
 			System.out.println("Not enough stock available for this product.");
 		}
@@ -148,7 +153,8 @@ public class products implements Comparable<products>, Cloneable {
 			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 			int newStock = this.stock - quantity;
 			Statement stmt = conn.createStatement();
-			String sql = "UPDATE Customers\r\n" + "SET stock= " + newStock + "\r\n" + "WHERE pid='" + this.pid + "';";
+			String sql = "UPDATE productstable\r\n" + "SET stock= " + newStock + "\r\n" + "WHERE pid='" + this.pid
+					+ "';";
 			stmt.executeQuery(sql);
 			stmt.closeOnCompletion();
 		} catch (Exception ex) {
@@ -166,38 +172,17 @@ public class products implements Comparable<products>, Cloneable {
 		} catch (Exception ex) {
 			System.out.println("SQLException: " + ex.getMessage());
 		}
-	}
-
-	public boolean undoOrder() {
-		if (order_list.isEmpty()) {
-			return false;
-		}
-		Iterator<orders> iterator = order_list.iterator();
-		orders recentOrder = null;
-
-		while (iterator.hasNext()) {
-			recentOrder = iterator.next();
-		}
-
-		if (recentOrder != null) {
-			iterator.remove();
-			System.out.println("Order " + recentOrder.getSerial() + " has been cancelled by the store");
-			stock += recentOrder.getQuantity();
-			return true;
-		}
-		return false;
-	}
-
-	public products pclone() {
 		try {
-			products cloned = (products) super.clone();
-			cloned.order_list = new ArrayList<orders>();
-			for (orders order : this.order_list) {
-				cloned.order_list.add(order);
-			}
-			return cloned;
-		} catch (CloneNotSupportedException e) {
-			throw new AssertionError();
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
+			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
+			Statement stmt = conn.createStatement();
+			String sql = "INSERT INTO ordercustomertable (oid, cid) VALUES (" + oid + " , " + customer.getCid()
+					+ ");";
+			stmt.executeQuery(sql);
+			stmt.closeOnCompletion();
+		} catch (Exception ex) {
+			System.out.println("SQLException: " + ex.getMessage());
 		}
 	}
 

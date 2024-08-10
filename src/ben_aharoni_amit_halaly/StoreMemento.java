@@ -7,7 +7,7 @@ public class StoreMemento {
 
 	    public StoreMemento(TreeSet<products> productList)  {
 	       for(products product : productList) {
-	    	   this.productList.add(product.pclone());
+	    	  // this.productList.add(product.pclone());
 	       }
 	    }
 
