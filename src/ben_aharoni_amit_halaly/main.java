@@ -115,7 +115,7 @@ public class main {
 		products p9 = stfactory.createSoldToWholesellers("underwear", 40, 80, 20, "zzz", 98.99);
 
 		s.addProduct(p1);
-		p1.addOrder(c1, 1111111, 1, eShipmentType.EXPRESS);
+		p1.addOrder(c1, 11, 1, eShipmentType.EXPRESS);
 		p1.addOrder(c2, 12, 1, eShipmentType.STANDARD);
 		p1.addOrder(c3, 13, 1, eShipmentType.EXPRESS);
 
@@ -269,7 +269,7 @@ public class main {
 		oid = input.nextInt();
 		System.out.println("please enter the amount:");
 		amount = input.nextInt();
-		while (i <= 0 || i >= 4) {
+		while (i <= 0 || i > 3) {
 			System.out.println("press: ");
 			for (eShipmentType type : eShipmentType.values()) {
 				System.out.println("(" + (i++) + ") for " + type);
@@ -320,7 +320,6 @@ public class main {
 	}
 
 	public static void printAllDetailsForSingleProduct(storeFacade s) {
-
 		Scanner input = new Scanner(System.in);
 		Connection conn = null;
 		System.out.println("\nEnter the serial code of the product you want to view :\n");
@@ -543,24 +542,5 @@ public class main {
 			System.out.println("-----------------------");
 
 		}
-		
-		public static void printamit(storeFacade s) {
-
-			Iterator<products> it = s.getProductIterator();
-			while (it.hasNext()) {
-				products element = it.next();
-				System.out.println(element);
-				System.out.println("-----------------------");
-
-			}
-			public static void printben(storeFacade s) {
-
-				Iterator<products> it = s.getProductIterator();
-				while (it.hasNext()) {
-					products element = it.next();
-					System.out.println(element);
-					System.out.println("-----------------------");
-
-				}
 	}
 }
