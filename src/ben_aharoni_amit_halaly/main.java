@@ -180,8 +180,8 @@ public class main {
 		double weight;
 		do {
 			System.out.println("choose a product type\n");
-			System.out.println("press:\n 1)for sold in Store  \n " + "2) for sold through website \n"
-					+ " 3)for sold to wholesellers\n ");
+			System.out.println("press:\n 1) for sold in Store  \n " + "2) for sold through website \n"
+					+ " 3) for sold to wholesellers\n ");
 			choose = input.nextInt();
 			if (choose < 1 || choose > 3) {
 				System.out.println("invalid option");
