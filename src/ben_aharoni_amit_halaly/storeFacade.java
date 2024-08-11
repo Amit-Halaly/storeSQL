@@ -35,6 +35,19 @@ public class storeFacade {
 
 	void addProduct(products product) {
 		Connection conn = null;
+		try {
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
+			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
+			Statement stmt = conn.createStatement();
+			String sql = "INSERT INTO productsTable (pid, productname, costprice,sellingprice, weight, stock) VALUES ('"
+					+ product.pid + "' ,'" + product.product_name + "' ," + product.cost_price + " ,"
+					+ product.selling_price + " ," + product.weight + "," + product.stock + ");";
+			stmt.executeQuery(sql);
+			stmt.closeOnCompletion();
+		} catch (Exception ex) {
+			System.out.println("SQLException: " + ex.getMessage());
+		}
 		if (product instanceof soldThroughWebsite) {
 			try {
 				Class.forName("org.postgresql.Driver");
@@ -44,10 +57,7 @@ public class storeFacade {
 				String sql = "INSERT INTO soldthroughwebsiteproductstable (pid, productname, costprice,sellingprice, weight, stock,destcountry) VALUES ('"
 						+ product.pid + "' ,'" + product.product_name + " '," + product.cost_price + " ,"
 						+ product.selling_price + " ," + product.weight + "," + product.stock + ", '"
-						+ ((soldThroughWebsite) product).getDest_country() + "');\r\n"
-						+ "INSERT INTO productsTable (pid, productname, costprice,sellingprice, weight, stock) VALUES ('"
-						+ product.pid + "' ,'" + product.product_name + "' ," + product.cost_price + " ,"
-						+ product.selling_price + " ," + product.weight + "," + product.stock + ");";
+						+ ((soldThroughWebsite) product).getDest_country() + "');";
 				stmt.executeQuery(sql);
 				stmt.closeOnCompletion();
 			} catch (Exception ex) {
@@ -60,12 +70,9 @@ public class storeFacade {
 					String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 					conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 					Statement stmt = conn.createStatement();
-					String sql = "INSERT INTO soldinstoreproductstable (pid, productname, costprice,sellingprice, weight, stock) VALUES ('"
-							+ product.pid + "' ," + product.product_name + " ," + product.cost_price + " ,"
-							+ product.selling_price + " ," + product.weight + "," + product.stock
-							+ ");\r\n  INSERT INTO productsTable (pid, productname, costprice,sellingprice, weight, stock) VALUES ('"
-							+ product.pid + "' ," + product.product_name + " ," + product.cost_price + " ,"
-							+ product.selling_price + " ," + product.weight + "," + product.stock + ")";
+					String sql ="INSERT INTO soldinstoreproductstable (pid, productname, costprice,sellingprice, weight, stock) VALUES ('"
+							+ product.pid + "' ,'" + product.product_name + "' ," + product.cost_price + " ,"
+							+ product.selling_price + " ," + product.weight + "," + product.stock + ");";
 					stmt.executeQuery(sql);
 					stmt.closeOnCompletion();
 				} catch (Exception ex) {
@@ -77,12 +84,9 @@ public class storeFacade {
 					String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 					conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 					Statement stmt = conn.createStatement();
-					String sql = "INSERT INTO soldtowholesellersproductstable (pid, productname, costprice,sellingprice, weight, stock) VALUES ('"
-							+ product.pid + "' ," + product.product_name + " ," + product.cost_price + " ,"
-							+ product.selling_price + " ," + product.weight + "," + product.stock
-							+ ");\r\n  INSERT INTO productsTable (pid, productname, costprice,sellingprice, weight, stock) VALUES ('"
-							+ product.pid + "' ," + product.product_name + " ," + product.cost_price + " ,"
-							+ product.selling_price + " ," + product.weight + "," + product.stock + ")";
+					String sql ="INSERT INTO soldtowholesellersproductstable (pid, productname, costprice,sellingprice, weight, stock) VALUES ('"
+							+ product.pid + "' ,'" + product.product_name + "' ," + product.cost_price + " ,"
+							+ product.selling_price + " ," + product.weight + "," + product.stock + ");";
 					stmt.executeQuery(sql);
 					stmt.closeOnCompletion();
 				} catch (Exception ex) {
@@ -95,7 +99,7 @@ public class storeFacade {
 			String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 			Statement stmt = conn.createStatement();
-			String sql = "INSERT INTO storeproducttable (pid , sid,  VALUES ('" + product.pid + "', " + this.Sid + ";";
+			String sql = "INSERT INTO storeproducttable (pid , sid)  VALUES ('" + product.pid + "', " + this.Sid + ");";
 			stmt.executeQuery(sql);
 			stmt.closeOnCompletion();
 		} catch (Exception ex) {
