@@ -7,7 +7,7 @@ public abstract class ShippingCompany {
 	private String whatsup;
 	private int scid;
 
-	public ShippingCompany(String name, String contact, double shippingFee, String whatsup,int scid) {
+	public ShippingCompany(String name, String contact, double shippingFee, String whatsup, int scid) {
 		this.name = name;
 		this.contact = contact;
 		this.shippingFee = shippingFee;
