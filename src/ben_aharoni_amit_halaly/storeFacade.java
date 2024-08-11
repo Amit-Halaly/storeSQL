@@ -4,8 +4,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.TreeSet;
-import java.util.Iterator;
 
 public class storeFacade {
 	private final int DOLLAR_RATE = 4;

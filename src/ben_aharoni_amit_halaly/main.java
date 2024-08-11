@@ -86,7 +86,7 @@ public class main {
 		} while (choose == 0);
 		System.out.println("please enter product name : ");
 		product_name = input.next();
-		System.out.println("please enter serial code : ");
+		System.out.println("please enter PID : ");
 		serialnum = input.next();
 		System.out.println("please enter product cost price : ");
 		cost_price = input.nextInt();
@@ -124,7 +124,7 @@ public class main {
 		Scanner input = new Scanner(System.in);
 		products foundObject = null;
 		while (foundObject == null) {
-			System.out.println("\nEnter the serial code of the product you want to change :\n");
+			System.out.println("\nEnter the PIDof the product you want to change :\n");
 			String serial = input.next();
 			foundObject = s.findProducts(serial);
 			if (foundObject == null)
@@ -137,7 +137,7 @@ public class main {
 		Scanner input = new Scanner(System.in);
 		products foundObject = null;
 		while (foundObject == null) {
-			System.out.println("\nEnter the serial code of the product you want to change :\n");
+			System.out.println("\nEnter the PID of the product you want to change :\n");
 			String serial = input.next();
 			foundObject = s.findProducts(serial);
 			if (foundObject == null)
@@ -153,7 +153,7 @@ public class main {
 		int amount, i = 1, cid, oid, choose = 0;
 		String serial, name, mobile;
 		while (foundObject == null) {
-			System.out.println("\nEnter the serial number of the product you want to make an order:\n");
+			System.out.println("\nEnter the PID number of the product you want to make an order:\n");
 			serial = input.next();
 			foundObject = s.findProducts(serial);
 			if (foundObject == null)
@@ -189,15 +189,12 @@ public class main {
 			foundObject.addOrder(new customer(name, mobile, cid), oid, amount, eShipmentType.STANDARD);
 			System.out.println("order has been created");
 			break;
-
+		case 3:
+			foundObject.addOrderWithoutShipment(new customer(name, mobile, cid), oid, amount);
+			break;
 		default:
 			System.out.println("invalid try again");
 			break;
-		}
-		if (choose == 3)
-
-		{
-			foundObject.addOrderWithoutShipment(new customer(name, mobile, cid), oid, amount);
 		}
 		input.nextLine();
 	}
@@ -205,7 +202,7 @@ public class main {
 	public static void printAllDetailsForSingleProduct(storeFacade s) {
 		Scanner input = new Scanner(System.in);
 		Connection conn = null;
-		System.out.println("\nEnter the serial code of the product you want to view :\n");
+		System.out.println("\nEnter the PID code of the product you want to view :\n");
 		String serial = input.next();
 
 		try {
@@ -324,13 +321,12 @@ public class main {
 		Scanner input = new Scanner(System.in);
 		products foundObject = null;
 		while (foundObject == null) {
-			System.out.println("\nEnter the serial code of the product you want to change :\n");
+			System.out.println("\nEnter the PID code of the product you want to view :\n");
 			String serial = input.next();
 			foundObject = s.findProducts(serial);
 			if (foundObject == null)
 				System.out.println("Wrong Serial number");
 		}
 		System.out.println(foundObject);
-
 	}
 }

@@ -215,14 +215,15 @@ public class products implements Comparable<products>, Cloneable {
 		}
 		try {
 			Class.forName("org.postgresql.Driver");
-			String dbUrl = "jdbc:postgresql://localhost:5432/college";
+			String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 			Statement stmt = conn.createStatement();
 			String sql = "SELECT * FROM shippingcompanytable;";
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
-				System.out.println(rs.getInt("scid") + "- " + rs.getString("scname") + "- " + rs.getString("contact")
-						+ "- " + rs.getDouble("shippingfee") + rs.getString("contactmobile"));
+				System.out.println("Shipping ID: " + rs.getInt("scid") + "\nCompany name: " + rs.getString("scname")
+				+ "\nContract: " + rs.getString("contact") + "\snShipping fee: " + rs.getDouble("shippingfee")
+				+ "\nContract mobile: " + rs.getString("contactmobile"));
 			}
 			stmt.closeOnCompletion();
 		} catch (Exception ex) {
