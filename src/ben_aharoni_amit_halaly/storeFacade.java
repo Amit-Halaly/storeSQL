@@ -41,12 +41,12 @@ public class storeFacade {
 				String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 				conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 				Statement stmt = conn.createStatement();
-				String sql = "INSERT INTO soldthroughwebsiteproductstable (pid, productname, costprice,sellingprice, weight, stock,destcountry) VALUES ("
-						+ product.pid + " ," + product.product_name + " ," + product.cost_price + " ,"
+				String sql = "INSERT INTO soldthroughwebsiteproductstable (pid, productname, costprice,sellingprice, weight, stock,destcountry) VALUES ('"
+						+ product.pid + "' ,'" + product.product_name + " '," + product.cost_price + " ,"
 						+ product.selling_price + " ," + product.weight + "," + product.stock + ", '"
 						+ ((soldThroughWebsite) product).getDest_country() + "');\r\n"
 						+ "INSERT INTO productsTable (pid, productname, costprice,sellingprice, weight, stock) VALUES ('"
-						+ product.pid + "' ," + product.product_name + " ," + product.cost_price + " ,"
+						+ product.pid + "' ,'" + product.product_name + "' ," + product.cost_price + " ,"
 						+ product.selling_price + " ," + product.weight + "," + product.stock + ");";
 				stmt.executeQuery(sql);
 				stmt.closeOnCompletion();
