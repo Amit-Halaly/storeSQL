@@ -5,6 +5,10 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Iterator;
 import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class main {
 	private static StoreMemento backup;
@@ -325,38 +329,28 @@ public class main {
 		System.out.println("\nEnter the serial code of the product you want to view :\n");
 		products foundObject = null;
 		String serial = input.next();
-		/*try {
-			Class.forName("org.postgresql.Driver");
-			String dbUrl = "jdbc:postgresql://localhost:5432/college";
-			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
-			Statement stmt = conn.createStatement();
-			String sql = "SELECT * FROM productstable WHERE pid= '" + serial + "';";
-			ResultSet rs = stmt.executeQuery(sql);
-			while (rs.next()) {
-				foundObject.pid = rs.getString("pid");
-				foundObject.product_name = rs.getString("productname");
-				foundObject.cost_price = rs.getInt("costprice");
-				foundObject.selling_price = rs.getInt("sellingprice");
-				foundObject.weight = rs.getFloat("weight");
-				foundObject.stock = rs.getInt("stock");
-				((soldThroughWebsite) foundObject).setDest_country(rs.getString("destcountry"));
-			}
-			stmt.closeOnCompletion();
-		} catch (Exception ex) {
-			System.out.println("SQLException: " + ex.getMessage());
-		}
-		if (foundObject == null) {
-			System.out.println("invalid input");
-			return;
-		}
-		System.out.println(foundObject);
-		int i = 1, profit = 0, profit1 = 0;
-		System.out.println("\nthe orders for " + foundObject.getProduct_name() + ":\n");/*
-		
-		
 		/*
-		 * for (orders order : foundObject.getOrderList()) { if (foundObject instanceof
-		 * soldThroughWebsite) { profit1 = foundObject.selling_price *
+		 * try { Class.forName("org.postgresql.Driver"); String dbUrl =
+		 * "jdbc:postgresql://localhost:5432/college"; conn =
+		 * DriverManager.getConnection(dbUrl, "postgres", "159632"); Statement stmt =
+		 * conn.createStatement(); String sql =
+		 * "SELECT * FROM productstable WHERE pid= '" + serial + "';"; ResultSet rs =
+		 * stmt.executeQuery(sql); while (rs.next()) { foundObject.pid =
+		 * rs.getString("pid"); foundObject.product_name = rs.getString("productname");
+		 * foundObject.cost_price = rs.getInt("costprice"); foundObject.selling_price =
+		 * rs.getInt("sellingprice"); foundObject.weight = rs.getFloat("weight");
+		 * foundObject.stock = rs.getInt("stock"); ((soldThroughWebsite)
+		 * foundObject).setDest_country(rs.getString("destcountry")); }
+		 * stmt.closeOnCompletion(); } catch (Exception ex) {
+		 * System.out.println("SQLException: " + ex.getMessage()); } if (foundObject ==
+		 * null) { System.out.println("invalid input"); return; }
+		 * System.out.println(foundObject); int i = 1, profit = 0, profit1 = 0;
+		 * System.out.println("\nthe orders for " + foundObject.getProduct_name() +
+		 * ":\n");/*
+		 * 
+		 * 
+		 * /* for (orders order : foundObject.getOrderList()) { if (foundObject
+		 * instanceof soldThroughWebsite) { profit1 = foundObject.selling_price *
 		 * order.getQuantity() - foundObject.cost_price * order.getQuantity();
 		 * System.out.println("\n" + (i++) + ")" + order + "the profit for this order :"
 		 * + profit1 + "$\n"); System.out.println(s.findCheapestShippingOption(order));
@@ -372,122 +366,119 @@ public class main {
 		 * order.getCustomer(), order.getQuantity()); } else ((SoldToWholesellers)
 		 * foundObject).invoiceFormatToAcountant(foundObject, order.getQuantity()); } }
 		 */
-		/*if (foundObject instanceof soldThroughWebsite) {
-			System.out.println("the total profit from this product is: " + profit + "$");
-			System.out.println("\n--------------------\n");
-		} else {
-			System.out.println("the total profit from this product is: " + profit * 4 + "₪");*/
-		
+		/*
+		 * if (foundObject instanceof soldThroughWebsite) {
+		 * System.out.println("the total profit from this product is: " + profit + "$");
+		 * System.out.println("\n--------------------\n"); } else {
+		 * System.out.println("the total profit from this product is: " + profit * 4 +
+		 * "₪");
+		 */
+
 		try {
-            // Load PostgreSQL JDBC Driver
-            Class.forName("org.postgresql.Driver");
+			// Load PostgreSQL JDBC Driver
+			Class.forName("org.postgresql.Driver");
 
-            // Connect to the database
-            String dbUrl = "jdbc:postgresql://localhost:5432/college";
-            conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
-            Statement stmt = conn.createStatement();
+			// Connect to the database
+			String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
+			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
+			Statement stmt = conn.createStatement();
 
-            // Fetch the product details
-            String sql = "SELECT * FROM productstable WHERE pid= '" + serial + "';";
-            ResultSet rs = stmt.executeQuery(sql);
-            String productType = "";
+			// Fetch the product details
+			String sql = "SELECT * FROM productstable WHERE pid= '" + serial + "';";
+			ResultSet rs = stmt.executeQuery(sql);
+			String productType = "";
 
-            if (rs.next()) {
-                foundObject.pid = rs.getString("pid");
-                foundObject.product_name = rs.getString("productname");
-                foundObject.cost_price = rs.getInt("costprice");
-                foundObject.selling_price = rs.getInt("sellingprice");
-                foundObject.weight = rs.getFloat("weight");
-                foundObject.stock = rs.getInt("stock");
+			if (rs.next()) {
+				foundObject.pid = rs.getString("pid");
+				foundObject.product_name = rs.getString("productname");
+				foundObject.cost_price = rs.getInt("costprice");
+				foundObject.selling_price = rs.getInt("sellingprice");
+				foundObject.weight = rs.getFloat("weight");
+				foundObject.stock = rs.getInt("stock");
 
-                // Determine the product type
-                String typeQuery = "SELECT 'Website' AS type FROM SoldThroughWebsiteProductsTable WHERE PID = '" + serial + "' " +
-                                   "UNION " +
-                                   "SELECT 'Store' AS type FROM SoldInStoreProductsTable WHERE PID = '" + serial + "' " +
-                                   "UNION " +
-                                   "SELECT 'Wholeseller' AS type FROM SoldToWholesellersProductsTable WHERE PID = '" + serial + "'";
-                ResultSet typeResult = stmt.executeQuery(typeQuery);
+				// Determine the product type
+				String typeQuery = "SELECT 'Website' AS type FROM SoldThroughWebsiteProductsTable WHERE PID = '"
+						+ serial + "' " + "UNION "
+						+ "SELECT 'Store' AS type FROM SoldInStoreProductsTable WHERE PID = '" + serial + "' "
+						+ "UNION " + "SELECT 'Wholeseller' AS type FROM SoldToWholesellersProductsTable WHERE PID = '"
+						+ serial + "'";
+				ResultSet typeResult = stmt.executeQuery(typeQuery);
 
-                if (typeResult.next()) {
-                    productType = typeResult.getString("type");
-                }
+				if (typeResult.next()) {
+					productType = typeResult.getString("type");
+				}
 
-                // Fetch related orders and customer information
-                String ordersQuery = "SELECT ot.OID, ot.quantity, ot.shipmentType, ct.CustomerName, ct.Mobile " +
-                                     "FROM OrdersTable ot " +
-                                     "JOIN OrderCustomerTable oct ON ot.OID = oct.OID " +
-                                     "JOIN CustomerTable ct ON oct.CID = ct.CID " +
-                                     "WHERE ot.OID IN (SELECT OID FROM OrderCustomerTable WHERE CID = (SELECT CID FROM OrderCustomerTable WHERE PID = '" + serial + "'))";
-                ResultSet ordersResult = stmt.executeQuery(ordersQuery);
+				// Fetch related orders and customer information
+				String ordersQuery = "SELECT ot.OID, ot.quantity, ot.shipmentType, ct.CustomerName, ct.Mobile "
+						+ "FROM OrdersTable ot " + "JOIN OrderCustomerTable oct ON ot.OID = oct.OID "
+						+ "JOIN CustomerTable ct ON oct.CID = ct.CID "
+						+ "WHERE ot.OID IN (SELECT OID FROM OrderCustomerTable WHERE CID = (SELECT CID FROM OrderCustomerTable WHERE PID = '"
+						+ serial + "'))";
+				ResultSet ordersResult = stmt.executeQuery(ordersQuery);
+				int i = 1, totalProfit = 0;
+				while (ordersResult.next()) {
+					int quantity = ordersResult.getInt("quantity");
+					String shipmentType = ordersResult.getString("shipmentType");
+					String customerName = ordersResult.getString("CustomerName");
+					String mobile = ordersResult.getString("Mobile");
 
-                while (ordersResult.next()) {
-                    int quantity = ordersResult.getInt("quantity");
-                    String shipmentType = ordersResult.getString("shipmentType");
-                    String customerName = ordersResult.getString("CustomerName");
-                    String mobile = ordersResult.getString("Mobile");
+					double profit = (foundObject.selling_price - foundObject.cost_price) * quantity;
 
-                    double profit = (foundObject.selling_price - foundObject.cost_price) * quantity;
+					if (productType.equals("Website")) {
+						System.out.println("\n" + (i++) + ") Order ID: " + ordersResult.getInt("OID") + " | Quantity: "
+								+ quantity + " | Shipment Type: " + shipmentType + " | Customer: " + customerName + " ("
+								+ mobile + ")" + " | Profit: $" + profit);
+					} else if (productType.equals("Store")) {
+						System.out.println("\n" + (i++) + ") Order ID: " + ordersResult.getInt("OID") + " | Quantity: "
+								+ quantity + " | Shipment Type: " + shipmentType + " | Customer: " + customerName + " ("
+								+ mobile + ")" + " | Profit: ₪" + profit * 4);
 
-                    if (productType.equals("Website")) {
-                        System.out.println("\n" + (i++) + ") Order ID: " + ordersResult.getInt("OID") + 
-                                           " | Quantity: " + quantity + 
-                                           " | Shipment Type: " + shipmentType + 
-                                           " | Customer: " + customerName + " (" + mobile + ")" + 
-                                           " | Profit: $" + profit);
-                    } else if (productType.equals("Store")) {
-                        System.out.println("\n" + (i++) + ") Order ID: " + ordersResult.getInt("OID") + 
-                                           " | Quantity: " + quantity + 
-                                           " | Shipment Type: " + shipmentType + 
-                                           " | Customer: " + customerName + " (" + mobile + ")" + 
-                                           " | Profit: ₪" + profit * 4);
+						// Invoice formatting for store sales
+						System.out.println("Store invoice formatted for accountant and customer.");
+					} else if (productType.equals("Wholeseller")) {
+						System.out.println("\n" + (i++) + ") Order ID: " + ordersResult.getInt("OID") + " | Quantity: "
+								+ quantity + " | Shipment Type: " + shipmentType + " | Customer: " + customerName + " ("
+								+ mobile + ")" + " | Profit: $" + profit);
 
-                        // Invoice formatting for store sales
-                        System.out.println("Store invoice formatted for accountant and customer.");
-                    } else if (productType.equals("Wholeseller")) {
-                        System.out.println("\n" + (i++) + ") Order ID: " + ordersResult.getInt("OID") + 
-                                           " | Quantity: " + quantity + 
-                                           " | Shipment Type: " + shipmentType + 
-                                           " | Customer: " + customerName + " (" + mobile + ")" + 
-                                           " | Profit: $" + profit);
+						// Invoice formatting for wholeseller sales
+						System.out.println("Wholeseller invoice formatted for accountant.");
+					}
 
-                        // Invoice formatting for wholeseller sales
-                        System.out.println("Wholeseller invoice formatted for accountant.");
-                    }
+					totalProfit += profit;
+				}
 
-                    totalProfit += profit;
-                }
+				System.out.println("\nTotal Profit for Product '" + foundObject.product_name + "' (ID: " + serial
+						+ "): $" + totalProfit);
+			} else {
+				System.out.println("Product not found with the provided serial code.");
+			}
 
-                System.out.println("\nTotal Profit for Product '" + foundObject.product_name + "' (ID: " + serial + "): $" + totalProfit);
-            } else {
-                System.out.println("Product not found with the provided serial code.");
-            }
-
-            stmt.closeOnCompletion();
-        } catch (Exception ex) {
-            System.out.println("SQLException: " + ex.getMessage());
-        } finally {
-            try {
-                if (conn != null) conn.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-}		
+			stmt.closeOnCompletion();
+		} catch (Exception ex) {
+			System.out.println("SQLException: " + ex.getMessage());
+		} finally {
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public static void printAllProducts(storeFacade s) {
 		Connection conn = null;
 		try {
 			Class.forName("org.postgresql.Driver");
-			String dbUrl = "jdbc:postgresql://localhost:5432/college";
+			String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 			Statement stmt = conn.createStatement();
 			String sql = "SELECT * FROM productstable;";
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
-				System.out.println(rs.getString("pid") + "- " + rs.getString("productname") + "- "
-						+ rs.getInt("costprice") + "- " + rs.getInt("sellingprice") + "- " + rs.getFloat("weight")
-						+ rs.getInt("stock") + "- " + rs.getString("destcountry"));
+				System.out.println("PID: "+rs.getString("pid") + "\nproduct name: " + rs.getString("productname") + "\ncost price: "
+						+ rs.getInt("costprice") + "\nselling price: " + rs.getInt("sellingprice") + "\nwighet: " + rs.getFloat("weight")
+						+"\nstock: " +rs.getInt("stock")+"\n\n");
 			}
 			stmt.closeOnCompletion();
 		} catch (Exception ex) {
@@ -502,7 +493,7 @@ public class main {
 		String serial = input.next();
 		try {
 			Class.forName("org.postgresql.Driver");
-			String dbUrl = "jdbc:postgresql://localhost:5432/college";
+			String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 			Statement stmt = conn.createStatement();
 			String sql = "SELECT * FROM productstable WHERE pid= '" + serial + "';";

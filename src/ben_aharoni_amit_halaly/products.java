@@ -131,7 +131,7 @@ public class products implements Comparable<products>, Cloneable {
 		}
 		try {
 			Class.forName("org.postgresql.Driver");
-			String dbUrl = "jdbc:postgresql://localhost:5432/college";
+			String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 			Statement stmt = conn.createStatement();
 			String sql = "SELECT * FROM shippingcompanytable;";
