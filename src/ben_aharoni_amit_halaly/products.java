@@ -99,8 +99,7 @@ public class products implements Comparable<products>, Cloneable {
 			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 			int newStock = this.stock - quantity;
 			Statement stmt = conn.createStatement();
-			String sql = "UPDATE productstable\r\n" + "SET stock= " + newStock + "\r\n" + "WHERE pid='" + this.pid
-					+ "';";
+			String sql = "UPDATE productstable" + " SET stock= " + newStock + " WHERE pid='" + this.pid + "';";
 			stmt.executeQuery(sql);
 			stmt.closeOnCompletion();
 		} catch (Exception ex) {
@@ -137,8 +136,9 @@ public class products implements Comparable<products>, Cloneable {
 			String sql = "SELECT * FROM shippingcompanytable;";
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
-				System.out.println(rs.getInt("scid") + "- " + rs.getString("scname") + "- " + rs.getString("contact")
-						+ "- " + rs.getDouble("shippingfee") + rs.getString("contactmobile"));
+				System.out.println("Shipping ID: " + rs.getInt("scid") + "\nCompany name: " + rs.getString("scname")
+						+ "\nContract: " + rs.getString("contact") + "\snShipping fee: " + rs.getDouble("shippingfee")
+						+ "\nContract mobile: " + rs.getString("contactmobile"));
 			}
 			stmt.closeOnCompletion();
 		} catch (Exception ex) {

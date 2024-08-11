@@ -12,9 +12,6 @@ public class storeFacade {
 	private int Sid;
 	private String storeName;
 	private static storeFacade instance = null;
-	private Caretaker caretaker = new Caretaker();
-	private TreeSet<products> product_list = new TreeSet<products>();
-	private ArrayList<ShippingCompany> ShippingCompany_list = new ArrayList<>();
 
 	private storeFacade(int sid, String StoreName) {
 		setSid(sid);
@@ -27,10 +24,6 @@ public class storeFacade {
 			instance = new storeFacade(1, "GAB");
 		}
 		return instance;
-	}
-
-	public TreeSet<products> getProduct_list() {
-		return product_list;
 	}
 
 	void addProduct(products product) {
@@ -70,7 +63,7 @@ public class storeFacade {
 					String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 					conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 					Statement stmt = conn.createStatement();
-					String sql ="INSERT INTO soldinstoreproductstable (pid, productname, costprice,sellingprice, weight, stock) VALUES ('"
+					String sql = "INSERT INTO soldinstoreproductstable (pid, productname, costprice,sellingprice, weight, stock) VALUES ('"
 							+ product.pid + "' ,'" + product.product_name + "' ," + product.cost_price + " ,"
 							+ product.selling_price + " ," + product.weight + "," + product.stock + ");";
 					stmt.executeQuery(sql);
@@ -84,7 +77,7 @@ public class storeFacade {
 					String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 					conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 					Statement stmt = conn.createStatement();
-					String sql ="INSERT INTO soldtowholesellersproductstable (pid, productname, costprice,sellingprice, weight, stock) VALUES ('"
+					String sql = "INSERT INTO soldtowholesellersproductstable (pid, productname, costprice,sellingprice, weight, stock) VALUES ('"
 							+ product.pid + "' ,'" + product.product_name + "' ," + product.cost_price + " ,"
 							+ product.selling_price + " ," + product.weight + "," + product.stock + ");";
 					stmt.executeQuery(sql);
@@ -99,20 +92,12 @@ public class storeFacade {
 			String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 			Statement stmt = conn.createStatement();
-			String sql = "INSERT INTO storeproducttable (pid , sid)  VALUES ('" + product.pid + "', " + this.Sid + ");";
+			String sql = "INSERT INTO storeproducttable (pid, sid)  VALUES ('" + product.pid + "' , " + this.Sid + ");";
 			stmt.executeQuery(sql);
 			stmt.closeOnCompletion();
 		} catch (Exception ex) {
 			System.out.println("SQLException: " + ex.getMessage());
 		}
-	}
-
-	public void addShippingCompany(ShippingCompany shippingCompany) {
-		ShippingCompany_list.add(shippingCompany);
-	}
-
-	public ArrayList<ShippingCompany> getShippingCompaniesList() {
-		return ShippingCompany_list;
 	}
 
 	public void deleteProduct(products foundObject) {
@@ -123,8 +108,7 @@ public class storeFacade {
 				String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 				conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 				Statement stmt = conn.createStatement();
-				String sql = "DELETE FROM soldthroughwebsiteproductstable WHERE pid='" + foundObject.pid
-						+ "'; DELETE FROM productsTable WHERE pid='" + foundObject.pid + "';";
+				String sql = "DELETE FROM soldthroughwebsiteproductstable WHERE pid='" + foundObject.pid + "'; ";
 				stmt.executeQuery(sql);
 				stmt.closeOnCompletion();
 			} catch (Exception ex) {
@@ -137,8 +121,7 @@ public class storeFacade {
 					String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 					conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 					Statement stmt = conn.createStatement();
-					String sql = "DELETE FROM soldinstoreproductstable WHERE pid='" + foundObject.pid
-							+ "'; DELETE FROM productsTable WHERE pid='" + foundObject.pid + "';";
+					String sql = "DELETE FROM soldinstoreproductstable WHERE pid='" + foundObject.pid + "';";
 					stmt.executeQuery(sql);
 					stmt.closeOnCompletion();
 				} catch (Exception ex) {
@@ -150,8 +133,7 @@ public class storeFacade {
 					String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 					conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 					Statement stmt = conn.createStatement();
-					String sql = "DELETE FROM soldtowholesellersproductstable WHERE pid='" + foundObject.pid
-							+ "'; DELETE FROM productsTable WHERE pid='" + foundObject.pid + "';";
+					String sql = "DELETE FROM soldtowholesellersproductstable WHERE pid='" + foundObject.pid + "';";
 					stmt.executeQuery(sql);
 					stmt.closeOnCompletion();
 				} catch (Exception ex) {
@@ -159,12 +141,24 @@ public class storeFacade {
 				}
 			}
 		}
+
 		try {
 			Class.forName("org.postgresql.Driver");
 			String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 			Statement stmt = conn.createStatement();
 			String sql = "DELETE FROM storeproducttable WHERE pid='" + foundObject.pid + "';";
+			stmt.executeQuery(sql);
+			stmt.closeOnCompletion();
+		} catch (Exception ex) {
+			System.out.println("SQLException: " + ex.getMessage());
+		}
+		try {
+			Class.forName("org.postgresql.Driver");
+			String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
+			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
+			Statement stmt = conn.createStatement();
+			String sql = "DELETE FROM productsTable WHERE pid='" + foundObject.pid + "';";
 			stmt.executeQuery(sql);
 			stmt.closeOnCompletion();
 		} catch (Exception ex) {
@@ -180,9 +174,9 @@ public class storeFacade {
 				String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 				conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 				Statement stmt = conn.createStatement();
-				String sql = "UPDATE productstable\r\n" + "SET stock= " + amount + "\r\n" + "WHERE pid='"
-						+ foundObject.pid + "';\r\n " + "UPDATE soldthroughwebsiteproductstable\r\n" + "SET stock= "
-						+ amount + "\r\n" + "WHERE pid='" + foundObject.pid + "'; ";
+				String sql = "UPDATE productstable " + "SET stock= " + amount + " WHERE pid='" + foundObject.pid + "';"
+						+ " UPDATE soldthroughwebsiteproductstable" + " SET stock= " + amount + " WHERE pid='"
+						+ foundObject.pid + "'; ";
 				stmt.executeQuery(sql);
 				stmt.closeOnCompletion();
 			} catch (Exception ex) {
@@ -221,54 +215,6 @@ public class storeFacade {
 		}
 	}
 
-	public Iterator<products> getProductIterator() {
-		return product_list.iterator();
-	}
-
-	public products findProductBySerial(String serialId) {
-		for (products product : product_list) {
-			if (product.getPid().equals(serialId)) {
-				return product;
-			}
-		}
-		return null;
-	}
-
-	public void resetMem(StoreMemento memento) {
-		this.product_list = new TreeSet<>(memento.getState());
-	}
-
-	public ShippingCompany findCheapestShippingOption(orders order) {
-		ShippingCompany cheapest = null;
-		double lowestFee = Double.MAX_VALUE;
-		for (ShippingCompany company : ShippingCompany_list) {
-			double fee = company.calculateShippingFee(order);
-			if (fee < lowestFee) {
-				lowestFee = fee;
-				cheapest = company;
-			}
-		}
-		cheapest.setShippingFee(lowestFee);
-		return cheapest;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(product_list);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		storeFacade other = (storeFacade) obj;
-		return Objects.equals(product_list, other.product_list);
-	}
-
 	public String getStoreName() {
 		return storeName;
 	}
@@ -293,11 +239,11 @@ public class storeFacade {
 			String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 			Statement stmt = conn.createStatement();
-			String sql = "SELECT * FROM soldinstoreproductstable WHERE pid='" + pid + "';";
+			String sql = "SELECT * FROM soldinstoreproductstable WHERE pid = '" + pid + "';";
 			ResultSet rs = stmt.executeQuery(sql);
-			if (rs.getString(pid) == null)
+			if (rs.next())
 				flag = 1;
-			if (flag == 0) {
+			if (flag == 1) {
 				stmt.closeOnCompletion();
 				soldinStoreFactory sf = new soldinStoreFactory();
 				return sf.createsoldinstore(rs.getString("productname"), rs.getInt("costprice"),
@@ -311,11 +257,11 @@ public class storeFacade {
 			String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 			Statement stmt = conn.createStatement();
-			String sql = "SELECT * FROM soldtowholesellersproductstable WHERE pid='" + pid + "';";
+			String sql = "SELECT * FROM soldtowholesellersproductstable WHERE pid= '" + pid + "';";
 			ResultSet rs = stmt.executeQuery(sql);
-			if (rs.getString(pid) == null)
+			if (rs.next())
 				flag = 1;
-			if (flag == 0) {
+			if (flag == 1) {
 				stmt.closeOnCompletion();
 				SoldToWholesellersFactory sf = new SoldToWholesellersFactory();
 				return sf.createSoldToWholesellers(rs.getString("productname"), rs.getInt("costprice"),
@@ -329,11 +275,11 @@ public class storeFacade {
 			String dbUrl = "jdbc:postgresql://localhost:5432/storeSQL";
 			conn = DriverManager.getConnection(dbUrl, "postgres", "159632");
 			Statement stmt = conn.createStatement();
-			String sql = "SELECT * FROM soldthroughwebsiteproductstable WHERE pid='" + pid + "';";
+			String sql = "SELECT * FROM soldthroughwebsiteproductstable WHERE pid = '" + pid + "';";
 			ResultSet rs = stmt.executeQuery(sql);
-			if (rs.getString(pid) == null)
+			if (rs.next())
 				flag = 1;
-			if (flag == 0) {
+			if (flag == 1) {
 				stmt.closeOnCompletion();
 				soldthroughwebsiteFactory sf = new soldthroughwebsiteFactory();
 				return sf.createsoldthroughwebsite(rs.getString("productname"), rs.getInt("costprice"),
@@ -345,5 +291,4 @@ public class storeFacade {
 		}
 		return null;
 	}
-
 }
