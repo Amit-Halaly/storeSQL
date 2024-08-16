@@ -26,7 +26,7 @@ It is designed to streamline store management and provide a reliable system for 
 
 1. **Clone the Repository:**  
    ```bash
-   git clone https://github.com/yourusername/store-database-program.git
+   git clone https://github.com/yourusername/storeSQL.git
    cd store-database-program
    ```
 
